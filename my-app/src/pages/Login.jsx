@@ -17,14 +17,11 @@ const Login = () => {
     setError(null);
 
     try {
-      const res = await fetch(
-        "https://express-backend-example2.vercel.app/api/users/login",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(form),
-        }
-      );
+      const res = await fetch("https://express-backend-example2.vercel.app/api/users/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Erro no login");
       localStorage.setItem("token", data.token);
@@ -37,35 +34,37 @@ const Login = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-4">
-      <h2 className="text-xl font-bold mb-4">Login</h2>
-      {error && <p className="text-red-500 mb-2">{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <input
-          name="username"
-          placeholder="Usuário"
-          value={form.username}
-          onChange={handleChange}
-          className="border p-2 mb-2 w-full"
-          required
-        />
-        <input
-          name="password"
-          type="password"
-          placeholder="Senha"
-          value={form.password}
-          onChange={handleChange}
-          className="border p-2 mb-4 w-full"
-          required
-        />
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-blue-500 text-white px-4 py-2 w-full"
-        >
-          {loading ? "Entrando..." : "Entrar"}
-        </button>
-      </form>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-sm">
+        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+        {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
+        <form onSubmit={handleSubmit}>
+          <input
+            name="username"
+            placeholder="Usuário"
+            value={form.username}
+            onChange={handleChange}
+            className="border p-2 mb-4 w-full rounded"
+            required
+          />
+          <input
+            name="password"
+            type="password"
+            placeholder="Senha"
+            value={form.password}
+            onChange={handleChange}
+            className="border p-2 mb-4 w-full rounded"
+            required
+          />
+          <button
+            type="submit"
+            disabled={loading}
+            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 w-full rounded"
+          >
+            {loading ? "Entrando..." : "Entrar"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
