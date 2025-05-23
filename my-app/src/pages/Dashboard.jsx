@@ -11,6 +11,12 @@ const Dashboard = ( ) => {
   const [category, setCategory] = useState("outros");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  
+  // Estados para edição
+  const [editingItem, setEditingItem] = useState(null);
+  const [editName, setEditName] = useState("");
+  const [editQuantity, setEditQuantity] = useState(1);
+  const [editCategory, setEditCategory] = useState("outros");
 
   const token = localStorage.getItem("token");
 
@@ -81,6 +87,47 @@ const Dashboard = ( ) => {
     }
   };
 
+  // Função para iniciar a edição
+  const handleStartEdit = (item) => {
+    setEditingItem(item._id || item.id);
+    setEditName(item.name);
+    setEditQuantity(item.quantity || 1);
+    setEditCategory(item.category || "outros");
+  };
+
+  
+  const handleSaveEdit = async () => {
+    if (!editingItem) return;
+    setLoading(true);
+    try {
+      const res = await fetch(`${API_URL}/${editingItem}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          name: editName,
+          quantity: editQuantity,
+          category: editCategory,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Erro ao atualizar item");
+      setEditingItem(null);
+      fetchItems();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Função para cancelar a edição
+  const handleCancelEdit = () => {
+    setEditingItem(null);
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");
@@ -138,23 +185,82 @@ const Dashboard = ( ) => {
         {items.map((item) => (
           <li
             key={item._id || item.id}
-            className="flex justify-between items-center border px-3 py-2"
+            className="border px-3 py-2"
           >
-            <div>
-              <span className="font-medium">{item.name}</span>
-              <span className="text-sm text-gray-500 ml-2">
-                ({item.quantity} {item.quantity > 1 ? "unidades" : "unidade"})
-              </span>
-              <span className="text-xs text-gray-400 ml-2">
-                {item.category}
-              </span>
-            </div>
-            <button
-              onClick={() => handleDeleteItem(item._id || item.id)}
-              className="text-red-500 text-sm"
-            >
-              Remover
-            </button>
+            {editingItem === (item._id || item.id) ? (
+              // Modo de edição
+              <div className="flex flex-col space-y-2">
+                <div className="flex space-x-2">
+                  <input
+                    type="text"
+                    value={editName}
+                    onChange={(e) => setEditName(e.target.value)}
+                    className="flex-1 border px-2 py-1"
+                  />
+                  <input
+                    type="number"
+                    value={editQuantity}
+                    onChange={(e) => setEditQuantity(Number(e.target.value))}
+                    className="w-20 border px-2 py-1"
+                    min="1"
+                  />
+                </div>
+                <div className="flex space-x-2">
+                  <select
+                    value={editCategory}
+                    onChange={(e) => setEditCategory(e.target.value)}
+                    className="flex-1 border px-2 py-1"
+                  >
+                    <option value="alimentos">Alimentos</option>
+                    <option value="bebidas">Bebidas</option>
+                    <option value="limpeza">Limpeza</option>
+                    <option value="higiene">Higiene</option>
+                    <option value="outros">Outros</option>
+                  </select>
+                </div>
+                <div className="flex justify-end space-x-2 mt-2">
+                  <button
+                    onClick={handleCancelEdit}
+                    className="text-gray-500 text-sm px-2 py-1"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    onClick={handleSaveEdit}
+                    className="bg-green-500 text-white text-sm px-2 py-1"
+                  >
+                    Salvar
+                  </button>
+                </div>
+              </div>
+            ) : (
+              
+              <div className="flex justify-between items-center">
+                <div>
+                  <span className="font-medium">{item.name}</span>
+                  <span className="text-sm text-gray-500 ml-2">
+                    ({item.quantity || 1} {(item.quantity || 1) > 1 ? "unidades" : "unidade"})
+                  </span>
+                  <span className="text-xs text-gray-400 ml-2">
+                    {item.category || "outros"}
+                  </span>
+                </div>
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => handleStartEdit(item)}
+                    className="text-blue-500 text-sm"
+                  >
+                    Editar
+                  </button>
+                  <button
+                    onClick={() => handleDeleteItem(item._id || item.id)}
+                    className="text-red-500 text-sm"
+                  >
+                    Remover
+                  </button>
+                </div>
+              </div>
+            )}
           </li>
         ))}
       </ul>

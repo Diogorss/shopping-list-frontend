@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const Login = () => {
       const res = await fetch("https://express-backend-example2.vercel.app/api/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(form ),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Erro no login");
@@ -63,6 +63,16 @@ const Login = () => {
           >
             {loading ? "Entrando..." : "Entrar"}
           </button>
+          
+          {/* Link para a página de registro */}
+          <div className="mt-4 text-center">
+            <p className="text-sm text-gray-600">
+              Não tem uma conta?{" "}
+              <Link to="/register" className="text-blue-500 hover:text-blue-700">
+                Registre-se
+              </Link>
+            </p>
+          </div>
         </form>
       </div>
     </div>
