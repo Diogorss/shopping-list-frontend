@@ -17,7 +17,7 @@ const Login = () => {
     setError(null);
 
     try {
-      const res = await fetch("https://express-backend-example2.vercel.app/api/users/login", {
+      const res = await fetch("https://express-backend-example2.vercel.app/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
