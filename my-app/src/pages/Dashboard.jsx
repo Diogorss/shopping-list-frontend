@@ -34,27 +34,30 @@ const Dashboard = () => {
   }, []);
 
   const handleAddItem = async () => {
-    if (!newItem) return;
-    setLoading(true);
-    try {
-      const res = await fetch(API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ name: newItem }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Erro ao adicionar item");
-      setNewItem("");
-      fetchItems();
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  if (!newItem) return;
+  setLoading(true);
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ 
+        name: newItem,
+        quantity: 1 
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Erro ao adicionar item");
+    setNewItem("");
+    fetchItems();
+  } catch (err) {
+    setError(err.message);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleDeleteItem = async (id) => {
     setLoading(true);
