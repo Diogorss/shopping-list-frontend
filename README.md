@@ -76,26 +76,3 @@ Uma aplicação completa de lista de compras com autenticação de usuários, de
 - Autenticação
     A aplicação utiliza JSON Web Tokens (JWT ) para autenticação. O token é armazenado no localStorage do navegador e enviado em todas as requisições que exigem autenticação.
 
-- Estrutura do Projeto
-    Backend
-    express-backend-example2/
-    ├── src/
-    │   ├── controller/       # Controladores da aplicação
-    │   ├── database/         # Configuração do banco de dados
-    │   ├── models/           # Modelos do Mongoose
-    │   ├── routes/           # Rotas da API
-    │   ├── services/         # Lógica de negócios
-    │   └── index.js          # Ponto de entrada da aplicação
-    ├── vercel.json           # Configuração para deploy no Vercel
-    └── package.json          # Dependências e scripts
-    Frontend
-    shopping-list-frontend/
-    ├── my-app/
-    │   ├── public/           # Arquivos públicos
-    │   ├── src/
-    │   │   ├── components/   # Componentes React
-    │   │   ├── pages/        # Páginas da aplicação
-    │   │   ├── App.jsx       # Componente principal
-    │   │   └── main.jsx      # Ponto de entrada
-    │   ├── vercel.json       # Configuração para deploy no Vercel
-    │   └── package.json      # Dependências e scripts
