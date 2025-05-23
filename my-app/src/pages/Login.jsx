@@ -34,41 +34,66 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white shadow-md rounded-lg p-8 w-full max-w-sm">
-        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
-        {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
-        <form onSubmit={handleSubmit}>
-          <input
-            name="username"
-            placeholder="Usuário"
-            value={form.username}
-            onChange={handleChange}
-            className="border p-2 mb-4 w-full rounded"
-            required
-          />
-          <input
-            name="password"
-            type="password"
-            placeholder="Senha"
-            value={form.password}
-            onChange={handleChange}
-            className="border p-2 mb-4 w-full rounded"
-            required
-          />
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600">
+      <div className="bg-white shadow-xl rounded-lg p-8 w-full max-w-md mx-4 transform transition-all hover:scale-105">
+        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Login</h2>
+        {error && (
+          <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded">
+            <p>{error}</p>
+          </div>
+        )}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
+              Usuário
+            </label>
+            <input
+              id="username"
+              name="username"
+              placeholder="Digite seu nome de usuário"
+              value={form.username}
+              onChange={handleChange}
+              className="border border-gray-300 p-3 w-full rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+              Senha
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              placeholder="Digite sua senha"
+              value={form.password}
+              onChange={handleChange}
+              className="border border-gray-300 p-3 w-full rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+              required
+            />
+          </div>
           <button
             type="submit"
             disabled={loading}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 w-full rounded"
+            className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold py-3 px-4 rounded-md transition-all shadow-md disabled:opacity-70"
           >
-            {loading ? "Entrando..." : "Entrar"}
+            {loading ? (
+              <span className="flex items-center justify-center">
+                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Entrando...
+              </span>
+             ) : (
+              "Entrar"
+            )}
           </button>
           
-          {/* Link para a página de registro */}
           <div className="mt-4 text-center">
             <p className="text-sm text-gray-600">
               Não tem uma conta?{" "}
-              <Link to="/register" className="text-blue-500 hover:text-blue-700">
+              <Link to="/register" className="text-indigo-600 hover:text-indigo-800 font-medium">
                 Registre-se
               </Link>
             </p>
